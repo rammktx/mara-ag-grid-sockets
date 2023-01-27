@@ -15,7 +15,9 @@ export default function App() {
     { field: 'price', sortable: true, filter: true },
   ]);
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+ /* 
+ uncomment here
+ const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
     'wss://ws.coincap.io/trades/binance',
     {
       //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
@@ -36,6 +38,7 @@ export default function App() {
       },
     ]);
   }, []);
+  */
 
   // useEffect(() => {
   //   //console.log(lastJsonMessage);
