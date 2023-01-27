@@ -8,35 +8,29 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 
 export default function App() {
   const gridRef = useRef(); // Optional - for accessing Grid's API
-  const [rowData, setRowData] = useState([
-    { make: 'Ford', model: 'F-150', price: 40000 },
-    { make: 'Tesla', model: 'Model 3', price: 50000 },
-    { make: 'Hyundai', model: 'Tucson', price: 60000 },
-  ]);
+  const [rowData, setRowData] = useState([]);
   const [columnDefs, setColumnDefs] = useState([
     { field: 'make', sortable: true, filter: true },
     { field: 'model', sortable: true, filter: true },
     { field: 'price', sortable: true, filter: true },
   ]);
 
-  
-const subscribeMsg = {
-  event: 'bts:subscribe',
-  data: {
-    channel: 'live_trades_btcusd'
-  }
-}
-const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-  'wss://ws.coincap.io/prices?assets=bitcoin',
-  {
-    //onOpen: () => sendJsonMessage(subscribeMsg)
-  }
-)
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    'wss://ws.coincap.io/prices?assets=bitcoin',
+    {
+      //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
+    }
+  );
 
-useEffect(() => {
-  if(lastJsonMessage)
-    setRowData([{  make: 'Crypto', model: 'Bitcoin', price: lastJsonMessage['bitcoin'] }, ...rowData])
-}, [lastJsonMessage]);
+  useEffect(() => {
+    //console.log(lastJsonMessage);
+    if (lastJsonMessage)
+      setRowData([
+        { make: 'Crypto', model: 'Bitcoin', price: lastJsonMessage['bitcoin'] },
+        ...rowData,
+      ]);
+  }, [lastJsonMessage]);
+  
   const defaultColDef = useMemo(
     () => ({
       sortable: true,
