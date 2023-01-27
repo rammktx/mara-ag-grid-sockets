@@ -15,22 +15,26 @@ export default function App() {
     { field: 'price', sortable: true, filter: true },
   ]);
 
-  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-    'wss://ws.coincap.io/prices?assets=bitcoin',
-    {
-      //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
-    }
-  );
+  // const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+  //   'wss://ws.coincap.io/trades/gemini',
+  //   {
+  //     //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
+  //   }
+  // );
 
-  useEffect(() => {
-    //console.log(lastJsonMessage);
-    if (lastJsonMessage)
-      setRowData([
-        { make: 'Crypto', model: 'Bitcoin', price: lastJsonMessage['bitcoin'] },
-        ...rowData,
-      ]);
-  }, [lastJsonMessage]);
-  
+  // useEffect(() => {
+  //   //console.log(lastJsonMessage);
+  //   if (lastJsonMessage)
+  //     setRowData([
+  //       {
+  //         make: lastJsonMessage['base'],
+  //         model: lastJsonMessage['quote'],
+  //         price: lastJsonMessage['price'],
+  //       },
+  //       ...rowData,
+  //     ]);
+  // }, [lastJsonMessage]);
+
   const defaultColDef = useMemo(
     () => ({
       sortable: true,
@@ -47,11 +51,11 @@ export default function App() {
     gridRef.current.api.deselectAll();
   }, []);
 
-  useEffect(() => {
-    fetch('https://www.ag-grid.com/example-assets/row-data.json')
-      .then((result) => result.json())
-      .then((rowData) => setRowData(rowData));
-  }, []);
+  // useEffect(() => {
+  //   fetch('https://www.ag-grid.com/example-assets/row-data.json')
+  //     .then((result) => result.json())
+  //     .then((rowData) => setRowData(rowData));
+  // }, []);
   return (
     <div className="ag-theme-alpine" style={{ height: 500 }}>
       <button onClick={buttonListener}>Clear Selections</button>
