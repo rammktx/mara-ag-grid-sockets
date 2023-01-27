@@ -10,28 +10,42 @@ export default function App() {
   const gridRef = useRef(); // Optional - for accessing Grid's API
   const [rowData, setRowData] = useState([]);
   const [columnDefs, setColumnDefs] = useState([
-    { field: 'make', sortable: true, filter: true },
+    { field: 'base', sortable: true, filter: true },
     { field: 'model', sortable: true, filter: true },
     { field: 'price', sortable: true, filter: true },
   ]);
 
-  // const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
-  //   'wss://ws.coincap.io/trades/gemini',
-  //   {
-  //     //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
-  //   }
-  // );
+  const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(
+    'wss://ws.coincap.io/trades/binance',
+    {
+      //onOpen: () => sendJsonMessage({'assets': 'bitcoin'})
+      onMessage: (event: WebSocketEventMap['message']) => {
+        processMessages(event);
+      },
+    }
+  );
+
+  const processMessages = useCallback((event: { data: string }) => {
+    const response = JSON.parse(event.data);
+
+    setRowData([
+      {
+        base: response['base'],
+        model: response['quote'],
+        price: response['price'],
+      },
+    ]);
+  }, []);
 
   // useEffect(() => {
   //   //console.log(lastJsonMessage);
-  //   if (lastJsonMessage)
+  //   if (lastJsonMessage && readyState == 1)
   //     setRowData([
   //       {
-  //         make: lastJsonMessage['base'],
+  //         base: lastJsonMessage['base'],
   //         model: lastJsonMessage['quote'],
   //         price: lastJsonMessage['price'],
   //       },
-  //       ...rowData,
   //     ]);
   // }, [lastJsonMessage]);
 
